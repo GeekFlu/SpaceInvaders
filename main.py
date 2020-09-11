@@ -1,5 +1,7 @@
-import pygame
+import math
 import random
+
+import pygame
 
 # Initialize the pygame
 pygame.init()
@@ -22,9 +24,9 @@ playerY = 480
 playerX_change = 0
 playerY_change = 0
 
-# Player
+# Enemy
 enemyImg = pygame.image.load("assets/64/012-ufo-4.png")
-enemyX = random.randint(0, 800)
+enemyX = random.randint(0, 735)
 enemyY = random.randint(50, 150)
 enemyX_change = 2.5
 enemyY_change = 30
@@ -36,6 +38,8 @@ bulletY = 480
 bulletX_change = 0
 bulletY_change = 4
 bullet_state = "ready"
+
+score = 0
 
 
 def fire_bullet(x, y):
@@ -50,6 +54,13 @@ def enemy(x, y):
 
 def player(x, y):
     screen.blit(playerImg, (x, y))
+
+
+def is_collision(enemyX, enemyY, bulletX, bulletY):
+    distance = math.sqrt((enemyX - bulletX) ** 2 + (enemyY - bulletY) ** 2)
+    if distance < 27:
+        return True
+    return False
 
 
 running = True
@@ -71,8 +82,9 @@ while running:
             if event.key == pygame.K_RIGHT:
                 playerX_change = 4
             if event.key == pygame.K_SPACE:
-                bulletX = playerX
-                fire_bullet(bulletX, bulletY)
+                if bullet_state is "ready":
+                    bulletX = playerX
+                    fire_bullet(bulletX, bulletY)
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -102,6 +114,16 @@ while running:
     if bullet_state is "fire":
         fire_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
+
+    # Collision
+    collision = is_collision(enemyX, enemyY, bulletX, bulletY)
+    if collision:
+        bulletY = 480
+        bullet_state = "ready"
+        score += 1
+        enemyX = random.randint(0, 735)
+        enemyY = random.randint(50, 150)
+        print(score)
 
     player(playerX, playerY)
     enemy(enemyX, enemyY)
