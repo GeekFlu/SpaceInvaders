@@ -68,16 +68,16 @@ def fire_bullet(x, y):
     screen.blit(bulletImg, (x + 16, y + 10))
 
 
-def enemy(x, y, i):
-    screen.blit(enemyImg[i], (x, y))
+def enemy(x, y, i_element):
+    screen.blit(enemyImg[i_element], (x, y))
 
 
 def player(x, y):
     screen.blit(playerImg, (x, y))
 
 
-def is_collision(enemyX, enemyY, bulletX, bulletY):
-    distance = math.sqrt((enemyX - bulletX) ** 2 + (enemyY - bulletY) ** 2)
+def is_collision(enemy_x, enemy_y, bullet_x, bullet_y):
+    distance = math.sqrt((enemy_x - bullet_x) ** 2 + (enemy_y - bullet_y) ** 2)
     if distance < 27:
         return True
     return False
