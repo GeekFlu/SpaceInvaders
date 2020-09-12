@@ -83,14 +83,13 @@ def is_collision(enemy_x, enemy_y, bullet_x, bullet_y):
     return False
 
 
-running = True
-
-
 def game_over():
     go_text = pygame.font.Font('freesansbold.ttf', 64).render("Game Over!", True, (255, 255, 255))
+    
     screen.blit(go_text, (200, 250))
 
 
+running = True
 while running:
     # RGB
     screen.fill((0, 0, 0))
